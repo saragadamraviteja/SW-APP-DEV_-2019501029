@@ -1,0 +1,124 @@
+#heading{
+	background-color:rgb(241, 97, 97);
+	height: 70px;
+	color:whitesmoke;
+	text-align : center;
+    margin : 0;
+    font-style: oblique;
+	font-size : 48px;
+	padding-top: 50px;
+	box-shadow: 0 4px 8px 0 rgba(185, 49, 49, 0.2), 0 6px 20px 0 rgba(145, 60, 60, 0.19);
+}
+
+
+
+body{
+    background-image:#1e7c6e
+}
+
+
+
+.image{
+	position: relative;
+    width :21%;
+    max-height: inherit;
+    left: 5%;
+    padding:10px;
+    	box-shadow: 0 4px 8px 0 rgba(187, 132, 132, 0.2), 0 6px 20px 0 rgba(173, 37, 37, 0.19);
+
+
+}
+
+.data{
+    margin-top: 10px;
+    color: rgb(6, 34, 6);
+    background-color: rgb(243, 245, 214);
+    font-style: oblique;
+    font-size: large;
+    padding: 10px 20px;
+    position: relative;
+  	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.attr{
+    font-weight: bold;
+    position: relative;
+    color: red;
+    right:0%;
+    text-align: right;
+}
+
+.matt{
+    font-weight: bold;
+    position: relative;
+    color:black;
+    right:0%;
+    text-align: right;
+}
+
+.value{
+	/* align */-content: center;
+	margin-left: 14%;
+	text-align: left;
+}
+
+.name{
+	font-family: sans-serif;
+	font-weight: bold;	
+
+}	
+
+.pDetails{
+	padding : 10px 10px;
+	/* background-color: silver */
+}
+
+
+
+
+.pDetails li{
+	/* font-family: ; */
+	padding : 5px;
+}
+
+
+
+
+.pDetails ol{
+	/* 	background-color: grey */
+	font-weight: bold;
+}	
+
+
+.table{
+	margin-top: 10px;
+	width: 80%	
+}
+
+.table ,.table td,.table th{
+	border-collapse: collapse;
+	border: solid 1px black;
+	padding : 5px;
+	text-align: center;
+
+}
+
+.table th{
+		height: 35px;
+		color:white;
+		background-color: black
+	}
+
+.request{
+	position: relative;
+	text-align: center;
+}
+
+
+.send{
+	margin-top: 10px;
+	background-color: grey;
+	width: 100px;
+	height: 25px;
+}
+
