@@ -14,7 +14,7 @@
 </style>
 </head>
 
-<body style = "Background="image.jpg">  
+<body style = "background-color:black">
 <div class="container">
   <h1>Sign Up</h1>
   <h5>Please fill the following details</h5>
@@ -34,16 +34,25 @@
     </div>
     <h4>select gender</h4>
 
-    <div class="checkbox">
-      <label><input type="checkbox" name="male"> male</label>
-      <br>
-      <label><input type="checkbox" name="female"> female</label>
-      <br>
-      <label><input type="checkbox" name="others"> others</label>
-    </div>
+    <form action="">
+      <input type="radio" name="gender" value="male"> Male<br>
+      <input type="radio" name="gender" value="female"> Female<br>
+      <input type="radio" name="gender" value="other"> Other
+    </form>
+    <br>
      <button type="button" class="btn btn-danger">Submit</button>
   </form>
 </div>  
+<p>
+  Your Details are:
+  <ul>
+      {% for d in notesdata : %}
+      <li>
+          {{ d }}
+      </li>
+      {% endfor %}
+  </ul>
+</p>
 </body>
 </html>
 
