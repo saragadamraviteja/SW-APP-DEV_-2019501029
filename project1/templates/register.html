@@ -15,9 +15,6 @@
   </head>
   <body style = "background-color:black">
   <div class="container">
-  {% if name %}
-    <h2>Hello {{name}}, please login </h2>
-  {% endif %}
   <h1>Sign Up</h1>
   <h5>Please fill the following details</h5>
   <br>
@@ -33,7 +30,7 @@
       <div class="input-group-prepend">
         <span class="input-group-text" id="basic-addon1">Password</span>
       </div>
-      <input type="Password" class="form-control" name="Password" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1">
+      <input type="Password" class="form-control" name="Password" placeholder="a-z,A-Z,0-9,special character" aria-label="Password" aria-describedby="basic-addon1">
     </div>
     <br>
     <div class="input-group mb-3">
@@ -69,6 +66,9 @@
     <br>
      <button type="submit" class="btn btn-danger">Submit</button>
     </form> 
+      {% if name %}
+    <h2>Hello {{name}} successfully registered.</h2>
+      {% endif %}
   </body>
 </html>
 
