@@ -8,19 +8,26 @@ from flask import render_template,  request, session
 from flask_session import Session
 from data import *
 
+from datetime import datetime
+
 app = Flask(__name__)
 
 # Check for environment variable
-# if not os.getenv("DATABASE_URL"):
-#     raise RuntimeError("DATABASE_URL is not set")
+if not os.getenv("DATABASE_URL"):
+    raise RuntimeError("DATABASE_URL is not set")
 
 # Configure session to use filesystem
-# app.config["SESSION_PERMANENT"] = False
-# app.config["SESSION_TYPE"] = "filesystem"
-# Session(app)
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
+
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.app_context().push()
+
 db.init_app(app)
+
+db.create_all()
 
 
 # Set up database
@@ -29,22 +36,31 @@ db.init_app(app)
 
 @app.route("/")
 def index():
-    return render_template("main.html")
+    return render_template("index.html")
+
+@app.route("/admin")
+def admin():
+    users = User.query.order_by("timestamp").all()
+    return render_template("admin.html", users = users)
+    
 
 @app.route("/register", methods = ['GET','POST'])
 def register():
     
     if (request.method=="POST"):
-        data.query.all()
+        # data.query.all()
         name = request.form.get("name")
         print(name)
-        pswd = request.form.get("Password")
-        print(pswd)
+        password = request.form.get("Password")
+        print(password)
         
         contact = request.form.get("ContactNumber")
         print(contact)
-        regist = data(username=name,ContactNumber=contact)
-        db.session.add(regist)
+        regist = User(username=name, password=password)
+        try:
+            db.session.add(regist)
+        except:
+            return render_template("error.html", message = "Error in registering. Please try again.")
         db.session.commit()
         return render_template("register.html",name=name)
 
