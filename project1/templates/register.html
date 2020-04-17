@@ -15,9 +15,6 @@
   </head>
   <body style = "background-color:black">
   <div class="container">
-  {% if name %}
-    <h2>Hello {{name}}, please login </h2>
-  {% endif %}
   <h1>Sign Up</h1>
   <h5>Please fill the following details</h5>
   <br>
@@ -33,7 +30,7 @@
       <div class="input-group-prepend">
         <span class="input-group-text" id="basic-addon1">Password</span>
       </div>
-      <input type="Password" class="form-control" name="Password" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1">
+      <input type="Password" class="form-control" name="Password" placeholder="a-z,A-Z,0-9,special character" aria-label="Password" aria-describedby="basic-addon1">
     </div>
     <br>
     <div class="input-group mb-3">
@@ -67,8 +64,26 @@
       <input type="Address" class="form-control" name="Address" placeholder="Address" aria-label="Address" aria-describedby="basic-addon1">
     </div>
     <br>
-     <button type="submit" class="btn btn-danger">Submit</button>
-    </form> 
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1">ContactNumber</span>
+      </div>
+      <input type="Integer" class="form-control" name="ContactNumber" placeholder="ContactNumber" aria-label="ContactNumber" aria-describedby="basic-addon1">
+    </div>
+    <br>
+     <button type="submit" class="btn btn-danger">Register</button>
+     <button type="submit" formaction="auth" class= "btn btn-danger" value="Login">Login</button>
+      {% if name %}
+    <h2>Hello {{name}} successfully registered.</h2>
+      {% endif %}
+      {% if name1 %}
+    <h2>Hello {{name1}} Username already exists. please try other.</h2>
+      {% endif %}
+      {% if message %}
+    <h2> {{message}}</h2>
+      {% endif %}
+    <br>
+    <br>
   </body>
 </html>
 
