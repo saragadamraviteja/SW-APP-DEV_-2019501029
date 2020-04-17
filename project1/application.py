@@ -57,10 +57,9 @@ def register():
         contact = request.form.get("ContactNumber")
         print(contact)
         regist = User(username=name, password=password)
-        try:
-            db.session.add(regist)
-        except:
-            return render_template("error.html", message = "Error in registering. Please try again.")
+        if User.query.get(name):
+            return render_template("register.html",name1=name)
+        db.session.add(regist)
         db.session.commit()
         return render_template("register.html",name=name)
 
