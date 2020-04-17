@@ -82,7 +82,7 @@ def auth():
 @app.route("/logout")
 def logout():
     Session.Clear()
-    print(Session)
+    # print(Session)
     return render_template("register.html")
 
     
