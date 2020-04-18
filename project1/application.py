@@ -12,9 +12,8 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-# Check for environment variable
-if not os.getenv("DATABASE_URL"):
-    raise RuntimeError("DATABASE_URL is not set")
+
+
 
 # Configure session to use filesystem
 app.config["SESSION_PERMANENT"] = False
@@ -81,11 +80,10 @@ def auth():
 
 @app.route("/logout")
 def logout():
-    Session.Clear()
+    session.clear()
     # print(Session)
     return render_template("register.html")
 
     
-
 
 
