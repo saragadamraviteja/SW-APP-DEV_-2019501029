@@ -5,7 +5,7 @@ db = SQLAlchemy()
 
 class User(db.Model):
     __tablename__ = "details"
-    username = db.Column(db.String, primary_key = True)
+    username = db.Column(db.String, primary_key = True, nullable = False )
     password = db.Column(db.String, nullable = False)
     timestamp = db.Column(db.DateTime, nullable = False)
 
