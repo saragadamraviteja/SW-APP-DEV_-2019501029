@@ -38,7 +38,7 @@ db.create_all()
 def index():
     if 'username' in session:
         username = session['username']
-        return render_template("index.html")
+        return render_template("index.html",name=username)
     else:
         return render_template("register.html")
 
@@ -86,10 +86,7 @@ def auth():
 
 @app.route("/logout")
 def logout():
-    session.clear()
-    # print(Session)
+    session.pop('username')
     return render_template("register.html")
-
-    
 
 
