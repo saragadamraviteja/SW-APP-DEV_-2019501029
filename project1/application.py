@@ -25,6 +25,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.app_context().push()
 
 db.init_app(app)
+app.secret_key = "temp"
 
 db.create_all()
 
@@ -35,7 +36,11 @@ db.create_all()
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    if 'username' in session:
+        username = session['username']
+        return render_template("index.html")
+    else:
+        return render_template("register.html")
 
 @app.route("/admin")
 def admin():
@@ -72,6 +77,7 @@ def auth():
         if obj is None:
             return render_template("register.html",message="User not yet registered")
         if (obj.username == name and obj.password == password):
+            session['username'] = request.form.get("name")
             return render_template("login.html",name=name)
 
         if(obj.username != name or obj.password != password):
