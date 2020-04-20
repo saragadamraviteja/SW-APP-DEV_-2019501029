@@ -70,7 +70,7 @@ def auth():
         print(password)
         obj = User.query.get(name)
         if obj is None:
-            return render_template("register.html",message="Invalid Credentials")
+            return render_template("register.html",message="User not yet registered")
         if (obj.username == name and obj.password == password):
             return render_template("login.html",name=name)
 
