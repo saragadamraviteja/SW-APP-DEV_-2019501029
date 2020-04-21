@@ -12,9 +12,8 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-# Check for environment variable
-if not os.getenv("DATABASE_URL"):
-    raise RuntimeError("DATABASE_URL is not set")
+
+
 
 # Configure session to use filesystem
 app.config["SESSION_PERMANENT"] = False
@@ -26,6 +25,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.app_context().push()
 
 db.init_app(app)
+app.secret_key = "temp"
 
 db.create_all()
 
@@ -36,7 +36,11 @@ db.create_all()
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    if 'username' in session:
+        username = session['username']
+        return render_template("index.html",name=username)
+    else:
+        return render_template("register.html")
 
 @app.route("/admin")
 def admin():
@@ -46,24 +50,43 @@ def admin():
 
 @app.route("/register", methods = ['GET','POST'])
 def register():
-    
     if (request.method=="POST"):
         # data.query.all()
         name = request.form.get("name")
         print(name)
         password = request.form.get("Password")
-        print(password)
-        
+        print(password) 
         contact = request.form.get("ContactNumber")
         print(contact)
         regist = User(username=name, password=password)
-        if User.query.get(name):    
+        if User.query.get(name):
             return render_template("register.html",name1=name)
         db.session.add(regist)
         db.session.commit()
         return render_template("register.html",name=name)
+    return render_template("register.html")
 
-    return render_template("register.html") 
+@app.route("/auth", methods=['GET','POST'])
+def auth():
+    if(request.method=="POST"):
+        name = request.form.get("name")
+        print(name)
+        password = request.form.get("Password")
+        print(password)
+        obj = User.query.get(name)
+        if obj is None:
+            return render_template("register.html",message="User not yet registered")
+        if (obj.username == name and obj.password == password):
+            session['username'] = request.form.get("name")
+            return render_template("login.html",name=name)
 
+        if(obj.username != name or obj.password != password):
+            return render_template("register.html",message="Invalid Credentials")
+    return render_template("register.html",message="Invalid Credentials")
+
+@app.route("/logout")
+def logout():
+    session.pop('username')
+    return render_template("register.html")
 
 
