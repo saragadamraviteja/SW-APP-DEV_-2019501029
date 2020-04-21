@@ -1,16 +1,31 @@
+
 import os
 
 from flask import Flask, session
-from flask_session import Session
 from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session, sessionmaker
 from flask import render_template,  request, session
 from flask_session import Session
-from books import *
+# from books import *
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 import csv
 
 app1 = Flask(__name__)
 
+db1 = SQLAlchemy()
+
+class Book(db1.Model):
+    __tablename__ = "book"
+    isbn = db1.Column(db1.String, primary_key = True)
+    title = db1.Column(db1.String, nullable = False)
+    author = db1.Column(db1.String, nullable = False)
+    year = db1.Column(db1.String, nullable = False)
+
+    def __init__(self, isbn, title,author,year):
+        self.isbn = isbn
+        self.title = title
+        self.author = author
+        self.year = year
 
 # Configure session to use filesystem
 app1.config["SESSION_PERMANENT"] = False

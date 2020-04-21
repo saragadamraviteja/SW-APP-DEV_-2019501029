@@ -2,17 +2,26 @@ import os
 
 from flask import Flask, session
 from flask_session import Session
-from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session, sessionmaker
 from flask import render_template,  request, session
-from flask_session import Session
-from data import *
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 from datetime import datetime
 
 app = Flask(__name__)
 
+db = SQLAlchemy()
 
+class User(db.Model):
+    __tablename__ = "details"
+    username = db.Column(db.String, primary_key = True, nullable = False)
+    password = db.Column(db.String, nullable = False)
+    timestamp = db.Column(db.DateTime, nullable = False)
+
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
+        self.timestamp = datetime.now()
 
 
 # Configure session to use filesystem
