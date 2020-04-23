@@ -1,14 +1,46 @@
 <html>
     <head>
+        <title>Login page</title>
+        <style>
+            hr {
+                border: 1px solid black;
+                margin-bottom: 10px;
+            }
+            button:hover{
+                border: 2px solid black;
+            }
+        </style>
     </head>
-    <body>
-    <h1> Successfully logged in ..!</h1>
-    <p></p>
-    <h2> Hi {{name}}</h2>
-    <br>
-    <br>
+    <body style="background-color:aqua;">
+    <h1 style="text-align: center;"> Welcome, you logged in Successfully</h1>
+    <hr>
+    <h2 style="font-family: sans-serif;"> Hello {{name}}, Search a lot of books from our website and explore them.</h2>
     <form action="/logout" class="inline">
-        <button class="float-center submit-button" >Logout</button>
-    </form>
+        <button class="float-center submit-button" style="float: right; background-color:lightgray; width: 100px; height: 35px; font-family: sans-serif;">Logout</button>
+    </form>    
+        <form action="{{ url_for('search') }}" method="POST">
+            <div class="form-group">
+                <label for="SearchType">Search by:</label>
+                <select class="form-control" name="book_tags" id="SearchType">
+                    <option value="isbn">ISBN</option>
+                    <option value="title">Title</option>
+                    <option value="author">Author</option>
+                </select>
+                <input type="text" placeholder="Search here" name="search_value" required style="width: 25%; margin-top: 20px;">
+                <button type="submit" form-action="search" class="searchbtn" value="searching">Search</button><br>
+            </div>
+            {{ message }}
+        </form>
+        <div class="results">
+            {% for book in books_result %}
+                {% if not books_result %}
+                    No results found.
+                {% endif %}
+                <ul class="booklist">
+                     <li>Title: <a href="{{ url_for('isbn', isbn_id=book.isbn) }}">{{book.title}}</a></li>
+                </ul>
+            {% endfor %}
+        </div>
+        <br><br>
     </body>
 </html>
