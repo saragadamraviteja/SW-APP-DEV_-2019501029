@@ -5,12 +5,15 @@ from flask_session import Session
 from flask import render_template,  request, session
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from sqlalchemy import exc
+import csv
 
 from datetime import datetime
 
 app = Flask(__name__)
 
 db = SQLAlchemy()
+
 
 class User(db.Model):
     __tablename__ = "details"
@@ -22,6 +25,32 @@ class User(db.Model):
         self.username = username
         self.password = password
         self.timestamp = datetime.now()
+
+class Book(db.Model):
+    __tablename__ = "books"
+    isbn = db.Column(db.String, primary_key = True)
+    title = db.Column(db.String, nullable = False)
+    author = db.Column(db.String, nullable = False)
+    year = db.Column(db.String, nullable = False)
+
+    def __init__(self, isbn, title,author,year):
+        self.isbn = isbn
+        self.title = title
+        self.author = author
+        self.year = year
+
+class Review(db.Model):
+    __tablename__ = "review"
+    username = db.Column(db.String, primary_key = True, nullable = False)
+    isbn = db.Column(db.String, primary_key = True, nullable = False)
+    rating = db.Column(db.Integer, nullable = False)
+    review = db.Column(db.String, nullable = False)
+
+    def __init__(self, username,isbn, rating,review):
+        self.username = username
+        self.isbn = isbn
+        self.rating = rating
+        self.review = review
 
 
 # Configure session to use filesystem
@@ -93,9 +122,61 @@ def auth():
             return render_template("register.html",message="Invalid Credentials")
     return render_template("register.html",message="Invalid Credentials")
 
+@app.route('/search', methods = ['GET', 'POST'])
+def search():
+    if request.method == 'POST':
+        search_type = request.form.get('book_tags').lower()
+        # print(search_type)
+        book_info = request.form.get('search_value').lower()
+        # print(book_info)
+        book_info = f'%{book_info.lower()}%'
+        books_result = Book.query.order_by(Book.title.asc()).filter(getattr(Book, search_type).ilike(book_info)).all()
+        # print(books_result)
+        if not books_result:
+            return render_template('login.html', message="No books found.")
+        return render_template('login.html', books_result=books_result)
+    return render_template('login.html')
+
+@app.route('/book/<string:isbn_id>')
+def isbn(isbn_id):
+        sel_book = Book.query.filter(Book.isbn == isbn_id).all()
+        total_reviews = db.session.query(Review).filter(Review.isbn == isbn_id)
+        return render_template('bookpage.html',sel_book =sel_book,total_reviews = total_reviews,isbn= isbn_id)
+
+@app.route('/review', methods =['GET','POST'])
+def review():
+    if request.method == 'POST':
+        rating = request.form.get('review_tags')
+        review = request.form.get('review_value')
+        name = session['username']
+        temp = list(request.form.items())
+        print(temp)
+        # print(temp[2][0])
+        detail = Book.query.filter(Book.isbn == temp[2][0]).all()
+        isbn = temp[2][0]
+        total_reviews = db.session.query(Review).filter(Review.isbn == isbn)
+        if (Review.query.filter_by(username = name, isbn = isbn).first() == None) :
+            data = Review(username = name, isbn = temp[2][0], rating = rating, review = review) 
+            db.session.add(data)
+            db.session.commit()
+        else:
+            return render_template('bookpage.html',message = 'You have already given review',sel_book = detail,total_reviews=total_reviews,isbn = isbn)
+    return render_template('bookpage.html',name = session['username'], message1 = 'review submitted succesfully.',total_reviews=total_reviews,sel_book = detail,isbn = isbn)
+
+
 @app.route("/logout")
 def logout():
     session.pop('username')
     return render_template("register.html")
 
 
+def uploadcsv():
+    csvfile = open("books.csv")
+    reader = csv.reader(csvfile)
+    for isbn,title,author,year in reader:
+        b = Book(isbn = isbn,title = title,author = author, year = year)
+        db.session.add(b)
+    db.session.commit()
+
+if __name__ == "__main__":
+    uploadcsv()
