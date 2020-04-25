@@ -15,3 +15,4 @@ class Book(db1.Model):
         self.title = title
         self.author = author
         self.year = year
+

@@ -1,46 +1,80 @@
 <html>
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Login page</title>
         <style>
             hr {
-                border: 1px solid black;
+                border: 1px solid bisque;
                 margin-bottom: 10px;
             }
             button:hover{
-                border: 2px solid black;
+                border: 1px solid white;
             }
+            
+            option {
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            }
+            #copy_rights {
+                color: bisque;
+                text-align: center;
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            }
+            .result_scroll {
+                margin-left: 15px; 
+                margin-top: 10px; color: bisque; 
+                width: 400px; 
+                height: 400px; 
+                overflow-x: scroll; 
+                overflow-y: scroll;
+                -ms-overflow-style: none;
+
+            }
+
+            /* Hide scrollbar for Chrome, Safari and Opera */
+            .result_scroll::-webkit-scrollbar {
+                display: none;
+            }
+
         </style>
     </head>
-    <body style="background-color:aqua;">
-    <h1 style="text-align: center;"> Welcome, you logged in Successfully</h1>
-    <hr>
-    <h2 style="font-family: sans-serif;"> Hello {{name}}, Search a lot of books from our website and explore them.</h2>
+    <body style="background-image: url('/static/bg1.jpg'); color: bisque;">
+    <h1 style="text-align: center; color: bisque; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;"> Hello {{name}}</h1>
     <form action="/logout" class="inline">
-        <button class="float-center submit-button" style="float: right; background-color:lightgray; width: 100px; height: 35px; font-family: sans-serif;">Logout</button>
+        <button class="float-center submit-button" style="float: right; background-color:bisque; width: 70px; height: 30px;font-weight: bold; font-family: sans-serif; margin-right: 20px;">Logout</button>
     </form>    
-        <form action="{{ url_for('search') }}" method="POST">
+    <h2 style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; color: gold; margin-left: 5%;">Search your books here</h2>
+    <hr>
+        <form action="{{ url_for('search') }}" method="POST" style="margin-left: 5%;">
             <div class="form-group">
-                <label for="SearchType">Search by:</label>
-                <select class="form-control" name="book_tags" id="SearchType">
+                <label for="SearchType" style="color: bisque; font-size: 17px; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">Search by</label>
+                <select class="form-control" name="book_tags" id="SearchType" style="margin-left: 5px; width: 75px; height: 25px; font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif">
                     <option value="isbn">ISBN</option>
                     <option value="title">Title</option>
                     <option value="author">Author</option>
                 </select>
-                <input type="text" placeholder="Search here" name="search_value" required style="width: 25%; margin-top: 20px;">
-                <button type="submit" form-action="search" class="searchbtn" value="searching">Search</button><br>
+                <label for="SearchType" style="color: bisque; font-size: 17px; margin-left: 2%; font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">Find</label>
+                <input type="text" placeholder="Search here" name="search_value" required style="width: 25%; margin-top: 20px;margin-left: 5px; height: 25px;">
+                <button type="submit" form-action="search" class="icon" value="searching" style="background-color: bisque; width: 40px; height: 25px;">Go</button><br><br>
+                <div style="margin-left: 16%; font-size: 16px; color:aqua; font-family: 'Courier New', Courier, monospace;">
+                    {{ message }}
+                </div>
             </div>
-            {{ message }}
         </form>
-        <div class="results">
-            {% for book in books_result %}
+        <form style="margin-left: 5%;">
+            <div class="results" style="color:bisque; margin-left: 15%;">
+                <div class="result_scroll">
+                    {% for book in books_result %}
                 {% if not books_result %}
                     No results found.
                 {% endif %}
-                <ul class="booklist">
-                     <li>Title: <a href="{{ url_for('isbn', isbn_id=book.isbn) }}">{{book.title}}</a></li>
-                </ul>
-            {% endfor %}
-        </div>
+                    <ul class="booklist">
+                        <li><a style="color: goldenrod; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;" href="{{ url_for('isbn', isbn_id=book.isbn) }}">{{book.title}}</a></li>
+                    </ul>
+                    {% endfor %}
+                </div>
+            </div>
+        </form>
         <br><br>
+        <h5 id="copy_rights">All copy rights &#169; reserved to ADRIFT BUNCH</h5>
     </body>
 </html>
