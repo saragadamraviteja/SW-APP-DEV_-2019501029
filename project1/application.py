@@ -39,18 +39,7 @@ class Book(db.Model):
         self.author = author
         self.year = year
 
-class Review(db.Model):
-    __tablename__ = "review"
-    username = db.Column(db.String, primary_key = True, nullable = False)
-    isbn = db.Column(db.String, primary_key = True, nullable = False)
-    rating = db.Column(db.Integer, nullable = False)
-    review = db.Column(db.String, nullable = False)
 
-    def __init__(self, username,isbn, rating,review):
-        self.username = username
-        self.isbn = isbn
-        self.rating = rating
-        self.review = review
 
 
 # Configure session to use filesystem
@@ -126,9 +115,10 @@ def auth():
 
 @app.route('/book/<string:isbn_id>')
 def isbn(isbn_id):
-        sel_book = Book.query.filter(Book.isbn == isbn_id).all()
-        total_reviews = db.session.query(Review).filter(Review.isbn == isbn_id)
-        return render_template('bookpage.html',sel_book =sel_book,total_reviews = total_reviews,isbn= isbn_id)
+    book = getbook(isbn_id)
+    # sel_book = Book.query.filter(Book.isbn == isbn_id).all()
+    total_reviews = db.session.query(Review).filter(Review.isbn == isbn_id)
+    return render_template('bookpage.html',sel_book =book,total_reviews = total_reviews,isbn= isbn_id, name = session['username'])
 
 
 @app.route("/logout")
