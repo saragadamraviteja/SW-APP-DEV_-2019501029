@@ -3,69 +3,30 @@ import os
 from flask import Flask, session
 from flask_session import Session
 from flask import render_template,  request, session
-from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
-from sqlalchemy import exc
-import csv
+from flask import url_for, session, flash, jsonify, make_response
+from models import db, User, Book, Review
+from getlogin import get_login_details
+from search import getbooks
+from review import review_present
+from bookpage import getbook
 
+from datetime import datetime
+import csv
 from datetime import datetime
 
 app = Flask(__name__)
-
-db = SQLAlchemy()
-
-
-class User(db.Model):
-    __tablename__ = "details"
-    username = db.Column(db.String, primary_key = True, nullable = False)
-    password = db.Column(db.String, nullable = False)
-    timestamp = db.Column(db.DateTime, nullable = False)
-
-    def __init__(self, username, password):
-        self.username = username
-        self.password = password
-        self.timestamp = datetime.now()
-
-class Book(db.Model):
-    __tablename__ = "books"
-    isbn = db.Column(db.String, primary_key = True)
-    title = db.Column(db.String, nullable = False)
-    author = db.Column(db.String, nullable = False)
-    year = db.Column(db.String, nullable = False)
-
-    def __init__(self, isbn, title,author,year):
-        self.isbn = isbn
-        self.title = title
-        self.author = author
-        self.year = year
-
-class Review(db.Model):
-    __tablename__ = "review"
-    username = db.Column(db.String, primary_key = True, nullable = False)
-    isbn = db.Column(db.String, primary_key = True, nullable = False)
-    rating = db.Column(db.Integer, nullable = False)
-    review = db.Column(db.String, nullable = False)
-
-    def __init__(self, username,isbn, rating,review):
-        self.username = username
-        self.isbn = isbn
-        self.rating = rating
-        self.review = review
-
-
 # Configure session to use filesystem
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
-Session(app)
+# app.config["SESSION_PERMANENT"] = False
+# app.config["SESSION_TYPE"] = "filesystem"
+# Session(app)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.app_context().push()
 
 db.init_app(app)
 app.secret_key = "temp"
 
-db.create_all()
+# db.create_all()
 
 
 # Set up database
@@ -76,7 +37,7 @@ db.create_all()
 def index():
     if 'username' in session:
         username = session['username']
-        return render_template("index.html",name=username)
+        return render_template("login.html",name=username)
     else:
         return render_template("register.html")
 
@@ -111,36 +72,48 @@ def auth():
         print(name)
         password = request.form.get("Password")
         print(password)
+
+        check = get_login_details(name,password)
+
         obj = User.query.get(name)
-        if obj is None:
-            return render_template("register.html",message="User not yet registered")
-        if (obj.username == name and obj.password == password):
+
+        if check==1:
+            return render_template("register.html",message="User not yet registered, Please sign up first")
+        elif check==0 :
             session['username'] = request.form.get("name")
             return render_template("login.html",name=name)
 
-        if(obj.username != name or obj.password != password):
-            return render_template("register.html",message="Invalid Credentials")
+        else:
+            return render_template("register.html",message="Invalid Credentials, please enter correct username and password")
     return render_template("register.html",message="Invalid Credentials")
+
 
 @app.route('/review', methods =['GET','POST'])
 def review():
-    if request.method == 'POST':
+    if request.method == 'POST':           
         rating = request.form.get('review_tags')
         review = request.form.get('review_value')
         name = session['username']
         temp = list(request.form.items())
         print(temp)
         # print(temp[2][0])
-        detail = Book.query.filter(Book.isbn == temp[2][0]).all()
-        isbn = temp[2][0]
+        if rating is None:
+            detail = Book.query.filter(Book.isbn == temp[1][0]).all()
+            isbn = temp[1][0]
+        else:
+            detail = Book.query.filter(Book.isbn == temp[2][0]).all()
+            isbn = temp[2][0]
         total_reviews = db.session.query(Review).filter(Review.isbn == isbn)
-        if (Review.query.filter_by(username = name, isbn = isbn).first() == None) :
-            data = Review(username = name, isbn = temp[2][0], rating = rating, review = review) 
+        # if rating is None:
+        #     return render_template('bookpage.html',message = 'Please rate this book',sel_book = detail,total_reviews=total_reviews,isbn = isbn)
+        flag = review_present(name,isbn)
+        if flag:
+            data = Review(username = name, isbn = isbn, rating = rating, review = review) 
             db.session.add(data)
             db.session.commit()
         else:
             return render_template('bookpage.html',message = 'You have already given review',sel_book = detail,total_reviews=total_reviews,isbn = isbn)
-    return render_template('bookpage.html',name = session['username'], message1 = 'review submitted succesfully.',total_reviews=total_reviews,sel_book = detail,isbn = isbn)
+    return render_template('bookpage.html',name = session['username'], message1 = 'Review submitted succesfully.',total_reviews=total_reviews,sel_book = detail,isbn = isbn)
 
 
 @app.route("/logout")
