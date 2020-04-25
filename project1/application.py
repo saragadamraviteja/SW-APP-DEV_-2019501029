@@ -122,27 +122,6 @@ def auth():
             return render_template("register.html",message="Invalid Credentials")
     return render_template("register.html",message="Invalid Credentials")
 
-@app.route('/search', methods = ['GET', 'POST'])
-def search():
-    if request.method == 'POST':
-        search_type = request.form.get('book_tags').lower()
-        # print(search_type)
-        book_info = request.form.get('search_value').lower()
-        # print(book_info)
-        book_info = f'%{book_info.lower()}%'
-        books_result = Book.query.order_by(Book.title.asc()).filter(getattr(Book, search_type).ilike(book_info)).all()
-        # print(books_result)
-        if not books_result:
-            return render_template('login.html', message="No books found.")
-        return render_template('login.html', books_result=books_result)
-    return render_template('login.html')
-
-@app.route('/book/<string:isbn_id>')
-def isbn(isbn_id):
-        sel_book = Book.query.filter(Book.isbn == isbn_id).all()
-        total_reviews = db.session.query(Review).filter(Review.isbn == isbn_id)
-        return render_template('bookpage.html',sel_book =sel_book,total_reviews = total_reviews,isbn= isbn_id)
-
 @app.route('/review', methods =['GET','POST'])
 def review():
     if request.method == 'POST':
