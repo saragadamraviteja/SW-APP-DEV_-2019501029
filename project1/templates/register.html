@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Project1</title>
+    <title>Registration Page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
       <style>
@@ -11,66 +11,73 @@
         .form-group{
           width:18%;
         }
+        hr {
+          border: 1px solid whitesmoke;
+        }
+        h6 {
+          font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+          font-weight: bold;
+        }
       </style>
   </head>
-  <body style = "background-color:black">
-  <div class="container">
-  <h1>Sign Up</h1>
-  <h5>Please fill the following details</h5>
-  <br>
-  <form action="{{url_for('register')}}" method="POST">
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id="basic-addon1">Username</span>
-      </div>
-      <input type="Username" class="form-control" name="name" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-    </div>
+  <body style = "background-image: url('/static/bg2.jpg');">
+    <div class="container">
+    <h1 style="font-family: sans-serif; font-size: 45px;">Sign Up</h1>
+    <h5 style="color: lightgray;">Fill in this form to register. Please login if you already have an account.</h5>
     <br>
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id="basic-addon1">Password</span>
+    <hr>
+    <form action="{{url_for('register')}}" method="POST">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1" style="font-size: 18px; color: lightgray;">Username *</span>
+        </div>
+        <input type="Username" class="form-control" name="name" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" style="width: 350px;" required>
       </div>
-      <input type="Password" class="form-control" name="Password" placeholder="a-z,A-Z,0-9,special character" aria-label="Password" aria-describedby="basic-addon1">
-    </div>
-    <br>
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id="basic-addon1">Age</span>
+      <br>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1" style="font-size: 18px; color: lightgray;">Password *</span>
+        </div>
+        <input type="Password" class="form-control" name="Password" placeholder="password: a-z,A-Z,0-9,special character" aria-label="Password" aria-describedby="basic-addon1" style="width: 350px;" required>
       </div>
-      <input type="Age" class="form-control" name="Age" placeholder="Age" aria-label="Age" aria-describedby="basic-addon1">
-    </div>
-    <br>
-    <div class="form-group">
-      <label for="gender">Gender</label>
-        <select name="gender" id="gender" class="form-control">
-          <option selected>Male</option>
-          <option>Female</option>
-          <option>Other</option>
+      <br>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1" style="font-size: 18px; color: lightgray;">Age</span>
+        </div>
+        <input type="Age" class="form-control" name="Age" placeholder="Age(years)" aria-label="Age" aria-describedby="basic-addon1" style="width: 50%;">
+      </div>
+      <br>
+      <div class="form-group">
+        <label for="gender">Gender</label>
+          <select name="gender" id="gender" class="form-control" style="width: 50%;">
+            <option selected>Male</option>
+            <option>Female</option>
+            <option>Other</option>
           </select>
           <span id="error_gender" class="text-danger"></span>
-    </div>
-    <br>
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id="basic-addon1">Address</span>
       </div>
-      <input type="Address" class="form-control" name="Address" placeholder="Address" aria-label="Address" aria-describedby="basic-addon1">
-    </div>
-    <br>
-    <br>
-     <button type="submit" class="btn btn-danger">Register</button>
-     <button type="submit" formaction="auth" class= "btn btn-danger" value="Login">Login</button>
+      <br>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">Address</span>
+        </div>
+        <input type="Address" class="form-control" name="Address" placeholder="Enter your address" aria-label="Address" aria-describedby="basic-addon1" style="width: 350px; height: 60px;">
+      </div>
+      <br>
+      <button type="submit" class="btn btn-danger" style="background-color: blue; border-color: blue;">Sign Up</button>
+      <button type="submit" formaction="auth" class= "btn btn-danger" value="Login">Login</button>
       {% if name %}
-    <h2>Hello {{name}} successfully registered.</h2>
+      <h6 style="color: green;">Congratulations {{name}}, you registered successfully.</h6>
       {% endif %}
       {% if name1 %}
-    <h2>Hello {{name1}} Username already exists. please try other.</h2>
+      <h6 style="color: yellow;">Hello {{name1}}, this username already exists. please try another.</h6>
       {% endif %}
       {% if message %}
-    <h2> {{message}}</h2>
+      <h6 style="color: red;"> {{message}}</h6>
       {% endif %}
-    <br>
-    <br>
+      <br>
+      <br>
   </body>
 </html>
 
