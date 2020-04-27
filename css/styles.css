@@ -1,0 +1,129 @@
+
+
+*{
+	line-height: 2em;
+}
+
+strong{
+	/* font-family : Georgia;  */
+	font-size: 25px;
+	color: rgb(207, 81, 81);
+	/* font-style: italic; */
+}
+
+
+body{
+	background-color: #fcf5f2
+
+}
+
+
+
+li{
+	padding :  5px;
+}
+
+#banner{
+	/* border-top: solid 10px white; */
+	margin-top: 10px;
+	background-color: rgb(205, 220, 223);
+	color: black
+
+	/* background-image: url('../images/port.jpg');
+  	background-size: contain;                     
+    background-repeat:   no-repeat;
+    background-position: center center;
+
+ */
+}
+
+
+.shadow{
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	/* margin-bottom: 10px  */
+}
+
+
+.mainImage{
+	display: block;
+	/* margin-top: 10px; */
+	width: 100px;	
+	margin :  0 auto;
+
+}
+
+.main{
+	font-size: 100px;
+	text-align: center;
+	padding-bottom:90px;
+	padding-top: 75px;
+	color: rgb(223, 38, 38);
+
+ 	position: relative;
+	/* top :  0; */
+	/* left: 38%;	 */
+}
+
+.image{
+	position: relative;
+	width : 10%;
+	left:  30%	;
+    	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+}
+
+
+.portimg{
+	position: relative;
+
+	top :  1;
+	/* right: : auto; */
+	height: 475px;
+	width: auto;
+}
+
+
+.introduction{
+	margin-top: 50px;
+	background-color: #393e4c;	
+	color: white;
+	padding-bottom: 200px;
+	padding-top: 20px
+}
+
+.pagecontent{
+	/* background-color:  grey; */
+	height: 500px;
+	width: 80%;
+	margin  : 0 auto;
+	/* filter: blur(10px) */
+}
+
+.block{
+	color :  white;
+	padding : 20px;
+	padding-bottom: 50px;
+	background-color: rgb(67, 67, 90)  ;
+	margin-bottom: 10px
+
+}	
+
+
+.block a:hover {
+	color: black;
+}
+
+
+ol{
+	/* padding-left :  100px; */
+	list-style-type: upper-roman;	
+}
+
+
+
+@media only screen and (max-width: 1000px) {
+.portimg{
+	display: none;
+	}
+}
+

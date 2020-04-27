@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Book page</title>
+        <style>
+            .hide {
+            display: none;
+            }
+
+            .clear {
+            float: none;
+            clear: both;
+            }
+
+            .rating {
+                width: 90px;
+                unicode-bidi: bidi-override;
+                direction: rtl;
+                text-align: center;
+                position: relative;
+            }
+
+            .rating > label {
+                float: right;
+                display: inline;
+                padding: 0;
+                margin: 0;
+                position: relative;
+                width: 0.9em;
+                cursor: pointer;
+                color: #000;
+            }
+
+            .rating > label:hover,
+            .rating > label:hover ~ label,
+            .rating > input.radio-btn:checked ~ label {
+                color: transparent;
+            }
+
+            .rating > label:hover:before,
+            .rating > label:hover ~ label:before,
+            .rating > input.radio-btn:checked ~ label:before,
+            .rating > input.radio-btn:checked ~ label:before {
+                content: "\2605";
+                position: absolute;
+                left: 0;
+                color: gold;
+            }
+
+            .book_details {
+                border: 3px solid black;
+                width: 355px;
+                height: 535px;
+                text-align: center;
+                margin-top: 10px;
+                margin-left: 10%;
+                margin-bottom: 10px;
+                background-image: url('/static/book4.jpg');
+            }
+            #book_title {
+                color:goldenrod;
+                margin-top: 35%;
+                margin-bottom: 15%;
+                font-size: 23px;
+                margin-left: 6px;
+                font-family:'Times New Roman', Times, serif;
+            }
+
+            #book_author{
+                color:gold;
+                font-size: 20px;
+                font-family:'Courier New', Courier, monospace;
+            }
+
+            #book_year, #book_isbn {
+                color:gold;
+                font-size: 12px;
+                font-family:'Courier New', Courier, monospace;
+            }
+
+            .buttons_pane {
+                height: 35px;
+            }
+            #hmbtn {
+                float: left;  
+            }
+            #lgbtn {
+                float: left;
+                margin-left: 90%;
+            }
+            button:hover {
+                border: 1px solid green;
+            }
+            .homebtn, .searchbtn {
+                background-color: bisque;
+                width: 70px;
+                height: 30px;
+                font-family:sans-serif;
+                font-weight: bold;
+            }
+            .logbtn {
+                background-color: bisque;
+                width: 70px;
+                height: 30px;
+                font-family:sans-serif;
+                font-weight: bold;
+            }
+            .form-group {
+                color: goldenrod;
+                margin-left: 10%;
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+                font-size: 20px;
+            }
+            #msg {
+                color: gold;
+                margin-left: 10%;
+                margin-top: 5px;
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            }
+            .review_pane {
+                margin-top: 5px;
+                margin-left: 10%;
+                width: 50%;
+                height: 250px;
+                overflow-y: scroll;
+                overflow-x: scroll;
+                -ms-overflow-style: none;
+            }
+
+            /* Hide scrollbar for Chrome, Safari and Opera */
+            .review_pane::-webkit-scrollbar {
+                display: none;
+            }
+
+            #uname {
+                font-size: 20px;
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+                color: bisque;
+            }
+            #urating {
+                font-size: 12px;
+                color: gold;
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            }
+            #ureview {
+                font-size: 14px;
+                color: bisque;
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            }
+            #copy_rights {
+                color: bisque;
+                text-align: center;
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            }           
+
+        </style>
+    </head>
+    <body style="background-image: url('/static/bg1.jpg');">
+        <div class="buttons_pane">
+            <div id="hmbtn">
+                <form action="/">
+                    <button class="homebtn">Home</button>
+                </form>
+            </div>
+            <div id="lgbtn">
+                <form action="/logout">
+                    <button class="logbtn">Logout</button>
+                </form>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="book_details">
+            {% if sel_book %}
+            <h1 id="book_title">{{sel_book[0].title}}</h1>
+
+            <br>
+            <br>
+            <br>
+            <br>
+            <h3 style="color:khaki"> By </h3> 
+            <h2 id="book_author">{{sel_book[0].author}}</h2>
+            <br>
+            <br>
+            <h2 id="book_year">{{sel_book[0].year}}</h2>
+            {% endif %}
+            {% if isbn %}
+            <!-- <h2 id="book_isbn">{{ isbn }}</h2> -->
+            {%endif %}
+        </div>
+        <form action="{{ url_for('review') }}" method="POST">
+            <div class="form-group">
+                <label for="Rating">Rate this book</label>
+                <div class="rating">
+                    <input id="star5" name="review_tags" type="radio" value="5" class="radio-btn hide" />
+                    <label for="star5" style="color: bisque;">☆</label>
+                    <input id="star4" name="review_tags" type="radio" value="4" class="radio-btn hide" />
+                    <label for="star4" style="color: bisque;">☆</label>
+                    <input id="star3" name="review_tags" type="radio" value="3" class="radio-btn hide" />
+                    <label for="star3" style="color: bisque;">☆</label>
+                    <input id="star2" name="review_tags" type="radio" value="2" class="radio-btn hide" />
+                    <label for="star2" style="color: bisque;">☆</label>
+                    <input id="star1" name="review_tags" type="radio" value="1" class="radio-btn hide" />
+                    <label for="star1" style="color: bisque;">☆</label>
+                    <div class="clear"></div> 
+                </div>
+                <input type="text" placeholder="Write your review" name="review_value" required style="height: 40px; width: 25%; margin-top: 20px;">
+                <button type="submit" name = "{{isbn}}" form-action="search" class="searchbtn" value="searching">Submit</button><br>
+            </div>
+        </form>
+        <div id="msg">
+            {{ message }}
+            <br>
+            <div style="color: green;">
+                {{message1}}
+            </div>
+        </div>
+        <div class="review_pane">
+            {% if total_reviews %}
+            {% for k in total_reviews%}
+            <div class="reviews" style="background-color:rgb(54, 53, 33); margin-bottom: 1px;">
+                <p id="uname">&#9787; {{ k.username }}</p>
+                <p id="urating"> Rating: {{ k.rating }} ☆</p>
+                <p id="ureview"> Review: {{ k.review }}</p>
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+        <br>
+        <br>
+        <h5 id="copy_rights">All copy rights &#169; reserved to ADRIFT BUNCH</h5>
+    </body>
+</html>
+
