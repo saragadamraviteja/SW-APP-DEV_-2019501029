@@ -11,8 +11,10 @@ class Test_bookpage(Testhelp):
         self.assertEqual(book.title,'China Dolls')
     
     def test_invalid(self):
-        book = getbook('0345498127')
-        self.assertEqual(book.author,'David Nicholls')
+        book = getbook('034')
+        if (book.author!='David Nicholls'):
+            flag = False
+        self.assertFalse(flag)
 
     def test_valid2(self):
         book = getbook('0061053716')
