@@ -67,9 +67,15 @@
                 font-family:'Times New Roman', Times, serif;
             }
 
-            #book_author, #book_year, #book_isbn {
-                color:khaki;
-                font-size: 15px;
+            #book_author{
+                color:gold;
+                font-size: 20px;
+                font-family:'Courier New', Courier, monospace;
+            }
+
+            #book_year, #book_isbn {
+                color:gold;
+                font-size: 12px;
                 font-family:'Courier New', Courier, monospace;
             }
 
@@ -167,12 +173,20 @@
         <br>
         <div class="book_details">
             {% if sel_book %}
-            <h2 id="book_title">{{sel_book[0].title}}</h2>
+            <h1 id="book_title">{{sel_book[0].title}}</h1>
+
+            <br>
+            <br>
+            <br>
+            <br>
+            <h3 style="color:khaki"> By </h3> 
             <h2 id="book_author">{{sel_book[0].author}}</h2>
+            <br>
+            <br>
             <h2 id="book_year">{{sel_book[0].year}}</h2>
             {% endif %}
             {% if isbn %}
-            <h2 id="book_isbn">{{ isbn }}</h2>
+            <!-- <h2 id="book_isbn">{{ isbn }}</h2> -->
             {%endif %}
         </div>
         <form action="{{ url_for('review') }}" method="POST">
