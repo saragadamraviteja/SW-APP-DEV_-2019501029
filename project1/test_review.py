@@ -4,7 +4,7 @@ from review import review_present
 from models import Review
 
 
-class Test_review(unittest.TestCase):
+class Test_review(Testhelp):
 
     def test_valid(self):
         flag = review_present('rrr','0553262149')

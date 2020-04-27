@@ -3,7 +3,7 @@ from Testhelp import Testhelp
 from getlogin import get_login_details
 from models import User
 
-class Test_getlogin(unittest.TestCase):
+class Test_getlogin(Testhelp):
 
     def test_valid(self):
         flag = get_login_details('rrr','5678')

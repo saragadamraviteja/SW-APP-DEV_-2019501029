@@ -4,6 +4,7 @@ from flask import Flask,request, render_template,redirect
 from flask import url_for,session,flash
 from flask_sqlalchemy import SQLAlchemy
 from init_config import initialize_testing_app
+
 # from flask import Flask,request,render_template
 
 
@@ -22,7 +23,7 @@ class Testhelp(unittest.TestCase):
         # db.init_app(app)
         # app.app_context().push()
     def test_touppercase(self):
-        self.assertEquals("foo".capitalize(),"Foo")
+        self.assertEqual("foo".capitalize(),"Foo")
     def tearDown(self):
         pass
 
