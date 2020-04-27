@@ -1,6 +1,7 @@
 import unittest
 from Testhelp import Testhelp
-from bookpage import *
+from bookpage import getbook
+from models import Book
 
 
 class Test_bookpage(Testhelp):
@@ -16,3 +17,6 @@ class Test_bookpage(Testhelp):
     def test_valid2(self):
         book = getbook('0061053716')
         self.assertEqual(book.year,'1991')
+
+if __name__ == "__main__":
+       unittest.main() 
