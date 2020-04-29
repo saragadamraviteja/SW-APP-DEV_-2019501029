@@ -78,7 +78,19 @@ body{
 	/* font-family: ; */
 	padding : 5px;
 }
+#banner{
+	/* border-top: solid 10px white; */
+	margin-top: 10px;
+	background-color: rgb(205, 220, 223);
+	color: black
 
+	/* background-image: url('../images/port.jpg');
+  	background-size: contain;                     
+    background-repeat:   no-repeat;
+    background-position: center center;
+
+ */
+}
 
 
 

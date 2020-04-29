@@ -1,31 +1,59 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>
-            Webpage
-        </title>
+        <title>Admin Page</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <style>
+            .data{
+                border: 2px solid bisque;
+                border-collapse: collapse;
+                width: 50%;
+                margin-left: 5%;
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            }
+
+            th {
+                border: 1px solid bisque;
+                padding: 5px;
+            }
+
+            td {
+                border: 1px solid bisque;
+                padding: 5px;
+            }
+            #table_head {
+                color: gold;
+                font-size: 20px;
+            }
+            #table_data {
+                color: bisque;
+                font-size: 16px;
+            }
+
+
+        </style>
     </head>
-    <body>
-        <table class="table" style = "margin : 0 auto;">
-            <thread class ="thread-dark">
+    <body style="background-image: url('/static/bg1.jpg');">
+        <h1 style="color:gold; text-align: center;">User database</h1>
+        <table class="data">
+            <thread class="thread-dark">
                 <tr>
-                   <th scope="col">Sl.NO</th>
-                   <th scope="col">USERNAME</th>
-                   <th scope="col">PASSWORD</th>
-                   <th scope="col">TIMESTAMP</th>
+                    <th id="table_head" scope="col">Serial No.</th>
+                    <th id="table_head" scope="col">Username</th>
+                    <th id="table_head" scope="col">Password</th>
+                    <th id="table_head" scope="col">Registered on</th>
                 </tr>
             </thread>
             {% set count = namespace(value = 1) %}
             <tbody>
                 {% for user in users %}
-                    <tr>
-                        <th scope="row">{{ count.value }}</th>
-                        {% set count.value = count.value + 1 %}
-                        <td>{{ user.username }}</td>
-                        <th>{{ user.password }}</th>
-                        <td>{{ user.timestamp }}</td>
-                    </tr>
+                <tr>
+                    <th id="table_data" scope="row">{{ count.value }}</th>
+                    {% set count.value = count.value + 1 %}
+                    <td id="table_data">{{ user.username }}</td>
+                    <th id="table_data">{{ user.password }}</th>
+                    <td id="table_data">{{ user.timestamp }}</td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
