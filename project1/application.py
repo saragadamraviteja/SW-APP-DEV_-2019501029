@@ -120,6 +120,7 @@ def review():
         rating = request.form.get('review_tags')
         review = request.form.get('review_value')
         name = session['username']
+        print(name)
         temp = list(request.form.items())
         print(temp)
         # print(temp[2][0])
@@ -135,6 +136,7 @@ def review():
         flag = review_present(name,isbn)
         if flag:
             data = Review(username = name, isbn = isbn, rating = rating, review = review) 
+            print(data)
             db.session.add(data)
             db.session.commit()
         else:

@@ -4,6 +4,67 @@
     <title>Registration Page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script>
+        function funcValidate() {
+            console.log("entered")
+
+            var username = document.querySelector('#email').value;
+            var passd = document.querySelector('#Password').value;
+            var errorMessage = "";
+
+
+            if (username.length === 0) {
+                document.querySelector('#error').innerHTML = "Please enter an email...!!!";
+                return false;
+            }
+
+            if (passd.length === 0){
+                document.querySelector('#error').innerHTML = "Please enter a password...!!!";
+                return false;
+            }    
+             
+            if ((/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).test(username)) {
+
+            } else {
+                document.querySelector('#error').innerHTML = "Please enter a valid email as a username";
+                return false;
+            }
+
+
+            if (document.querySelector('#Password').value.length < 6 ) {
+                document.querySelector('#error').innerHTML = "Password should be atleast 6 characters.";
+                return false;
+            }
+
+            const pass = document.querySelector('#Password').value;
+
+            if (!/[a-z]/.test(pass)) {
+                errorMessage += "Password should contain atleast one lowercase alphabet." + "\n"; 
+            }
+
+            if (!/[A-Z]/.test(pass)) {
+                errorMessage += "Password should contain atleast one uppercase alphabet." + "\n"; 
+            }
+                
+            if (!/[0-9]/.test(pass)) {
+                errorMessage += "Password should contain atleast one number." + "\n"; 
+            }
+
+            if (!/[!@#\$%\^\&*\)\(+=._-]/.test(pass)) {
+                errorMessage += "Password should contain atleast one symbol." + "\n"; 
+            }
+
+
+            if (errorMessage === ""){
+                return true;
+            }
+
+            document.querySelector('#error').innerHTML = errorMessage;
+
+            return false;
+
+          }
+        </script>
       <style>
         .container {
           color:white;
@@ -14,7 +75,7 @@
         hr {
           border: 1px solid whitesmoke;
         }
-        h6 {
+        h5 {
           font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
           font-weight: bold;
         }
@@ -26,58 +87,46 @@
     <h5 style="color: lightgray;">Fill in this form to register. Please login if you already have an account.</h5>
     <br>
     <hr>
-    <form action="{{url_for('register')}}" method="POST">
+    <form id = "reg-form" method="POST">
       <div class="input-group mb-3">
         <div class="input-group-prepend">
-          <span class="input-group-text" id="basic-addon1" style="font-size: 18px; color: lightgray;">Username *</span>
+          <label for="username" style="font-size: 18px; color: lightgray;">email *</label>
+          <span id="error_username" class="text-danger"></span>
         </div>
-        <input type="Username" class="form-control" name="name" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" style="width: 350px;" required>
+        <input type="Username" id = "email" class="form-control" name="name" placeholder="email" aria-label="Username" aria-describedby="basic-addon1" style="width: 350px;" required>
       </div>
       <br>
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text" id="basic-addon1" style="font-size: 18px; color: lightgray;">Password *</span>
         </div>
-        <input type="Password" class="form-control" name="Password" placeholder="password: a-z,A-Z,0-9,special character" aria-label="Password" aria-describedby="basic-addon1" style="width: 350px;" required>
+        <input type="Password" id = "Password" class="form-control" name="Password" placeholder="password: a-z,A-Z,0-9,special character" aria-label="Password" aria-describedby="basic-addon1" style="width: 350px;">
       </div>
       <br>
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="basic-addon1" style="font-size: 18px; color: lightgray;">Age</span>
-        </div>
-        <input type="Age" class="form-control" name="Age" placeholder="Age(years)" aria-label="Age" aria-describedby="basic-addon1" style="width: 50%;">
-      </div>
       <br>
-      <div class="form-group">
-        <label for="gender">Gender</label>
-          <select name="gender" id="gender" class="form-control" style="width: 50%;">
-            <option selected>Male</option>
-            <option>Female</option>
-            <option>Other</option>
-          </select>
-          <span id="error_gender" class="text-danger"></span>
-      </div>
-      <br>
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="basic-addon1">Address</span>
-        </div>
-        <input type="Address" class="form-control" name="Address" placeholder="Enter your address" aria-label="Address" aria-describedby="basic-addon1" style="width: 350px; height: 60px;">
-      </div>
-      <br>
-      <button type="submit" class="btn btn-danger" style="background-color: blue; border-color: blue;">Sign Up</button>
-      <button type="submit" formaction="auth" class= "btn btn-danger" value="Login">Login</button>
+      <button type="submit" onclick = "return funcValidate()" class="btn btn-danger" formaction = "{{ url_for('register') }}" id = "submit" style="background-color: blue; border-color: blue;">Sign Up</button>
+      <button type="submit" formaction="{{ url_for('auth') }}" class= "btn btn-danger" value="Login">Login</button>
+      </form>
+    </div>
       {% if name %}
-      <h6 style="color: green;">Congratulations {{name}}, you registered successfully.</h6>
+      <h5 style="color:white;padding-left:230px">Congratulations {{name}}, 
+      <br>
+      you registered successfully.</h5>
       {% endif %}
       {% if name1 %}
-      <h6 style="color: yellow;">Hello {{name1}}, this username already exists. please try another.</h6>
+      <h5 style="color:white;padding-left:230px">Hello {{name1}},
+      <br>
+      this username already exists.
+       please try another.</h5>
       {% endif %}
       {% if message %}
       <h6 style="color: red;"> {{message}}</h6>
       {% endif %}
       <br>
       <br>
+      <p>
+        <h4 id = "error" style = "text-align:left;padding-left:230px;color:orange;"></h4>
+      </p>
   </body>
 </html>
 
