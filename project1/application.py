@@ -87,25 +87,55 @@ def auth():
             return render_template("register.html",message="Invalid Credentials, please enter correct username and password")
     return render_template("register.html",message="Invalid Credentials")
 
-@app.route('/search', methods = ['GET', 'POST'])
-def search():
-    if request.method == 'POST':
-        search_type = request.form.get('book_tags').lower()
-        # print(search_type)
-        book_info = request.form.get('search_value').lower()
-        # print(book_info)
-        book_info = f'%{book_info.lower()}%'
+# @app.route('/search', methods = ['GET', 'POST'])
+# def search():
+#     if request.method == 'POST':
+#         search_type = request.form.get('book_tags').lower()
+#         # print(search_type)
+#         book_info = request.form.get('search_value').lower()
+#         # print(book_info)
+#         book_info = f'%{book_info.lower()}%'
 
-        books_result = getbooks(search_type,book_info)
+#         books_result = getbooks(search_type,book_info)
 
-        # books_result = Book.query.order_by(Book.title.asc()).filter(getattr(Book, search_type).ilike(book_info)).all()
-        # print(len(books_result))
-        books_found = len(books_result)
-        print(books_found)
-        if not books_result:
-            return render_template('login.html', message="No books found.", name = session['username'])
-        return render_template('login.html', books_result=books_result, name = session['username'], message = "Total "+str(books_found)+" results found.")
-    return render_template('login.html', name = session['username'])
+#         # books_result = Book.query.order_by(Book.title.asc()).filter(getattr(Book, search_type).ilike(book_info)).all()
+#         # print(len(books_result))
+#         books_found = len(books_result)
+#         print(books_found)
+#         if not books_result:
+#             return render_template('login.html', message="No books found.", name = session['username'])
+#         return render_template('login.html', books_result=books_result, name = session['username'], message = "Total "+str(books_found)+" results found.")
+#     return render_template('login.html', name = session['username'])
+
+@app.route("/test")
+def test():
+    return render_template("test.html",name = "abhi")
+
+
+@app.route("/api/bookpage",methods = ["POST"])
+def apibookpage():
+    isbn = request.form.get("isbn")
+    bookreturned = getbook(isbn) 
+    print(bookreturned)
+    Bookdetails = {}
+    Bookdetails["isbn"] = bookreturned.isbn
+    Bookdetails["title"] = bookreturned.title
+    Bookdetails["author"] = bookreturned.author
+    return jsonify({"bookinfo":Bookdetails})
+
+@app.route("/api/bookpagereview",methods = ["POST"])
+def apibookpagereview():
+    isbn = request.form.get("isbn")
+    name = request.form.get("username")
+    bookreturned = getbook(isbn) 
+    Bookdetails = {}
+    Bookdetails["isbn"] = bookreturned.isbn
+    Bookdetails["title"] = bookreturned.title
+    Bookdetails["author"] = bookreturned.author
+    return jsonify({"bookinfo":Bookdetails})
+
+
+
 
 @app.route('/book/<string:isbn_id>')
 def isbn(isbn_id):
