@@ -1,0 +1,130 @@
+.container {
+    /* border: 1px solid green; */
+    width: 100%;
+    height: 600px;
+}
+
+#logout{
+    padding-right: 25px;
+}
+.actual{
+    padding: 1%;
+    /* border: 1px solid brown; */
+    height: 600px;
+    float: left;
+    margin-left: 20px;
+    width: 60%;
+}
+
+.searchBar_result {
+    padding: 1%;
+    /* border: 1px solid brown; */
+    height: 600px;
+    float: left;
+    width: 35%;
+} 
+
+.zoom-title {
+    /* border: 1px dotted purple; */
+    height: 500px;
+    overflow-x: scroll;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+}
+
+.zoom-title::-webkit-scrollbar {
+    display: none;
+}
+
+
+
+
+#review-results {
+    /* border: 1px solid orange; */
+    margin-top: 50px;
+    height: 350px;
+    /* overflow: hidden; */
+    overflow-x: scroll;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+}
+#review-results::-webkit-scrollbar {
+    display: none;
+}
+
+/*Book details*/
+#book-isbn, #book-year, #book-author {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: blueviolet;
+    font-size: 14px;
+}
+#book-title{
+    font-size: 30px;
+    font-family: 'Times New Roman', Times, serif;
+    color: rgb(199, 10, 10);
+}
+.review-box {
+    /* border: 1px solid blue; */
+    margin-bottom: 10px;
+    background-color: khaki;
+}
+.review-user {
+    color: black;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: larger;
+}
+
+.review-rating{
+    color: black;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: smaller;
+}
+.review-review{
+    color: black;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: smaller;
+}
+
+.rate {
+    width: 90px;
+    unicode-bidi: bidi-override;
+    direction: rtl;
+    text-align: center;
+    position: relative;
+}
+
+.rate > label {
+    float: right;
+    display: inline;
+    padding: 0;
+    margin: 0;
+    position: relative;
+    width: 0.9em;
+    cursor: pointer;
+    color: #000;
+}
+
+.rate > label:hover,
+.rate > label:hover ~ label,
+.rate > input.radio-btn:checked ~ label {
+    color: transparent;
+}
+
+.rate > label:hover:before,
+.rate > label:hover ~ label:before,
+.rate > input.radio-btn:checked ~ label:before,
+.rate > input.radio-btn:checked ~ label:before {
+    content: "\2605";
+    position: absolute;
+    left: 0;
+    color: gold;
+}
+
+.hide {
+    display: none;
+}
+
+.clear {
+    float: none;
+    clear: both;
+}
