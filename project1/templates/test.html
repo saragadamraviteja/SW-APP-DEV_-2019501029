@@ -29,15 +29,10 @@
                     
                     if (data.allBooks.length === 0) {
                         document.querySelector("#no-results").innerHTML = "No results"
-                        document.querySelector("#zoom-title").innerHTML = ""
-                        document.querySelector("#review-results").innerHTML = ""
-                        document.querySelector("#abhi_book").innerHTML = ""
-                        x.style.display = "none"
-                        
                         return false
                     } else {
                         document.querySelector("#no-results").innerHTML = data.allBooks.length + ' books found'
-                        document.querySelector("#zoom-title").innerHTML = ""
+                        document.querySelector(".zoom-title").innerHTML = ""
                         document.querySelector("#abhi_book").innerHTML = ""
                         x.style.display = "none"
                         for (key in data.allBooks) {
@@ -49,8 +44,8 @@
                         //global_isbn = isbn_book
                         book.onclick = () => {bookpage(isbn_book)};
 
-                        document.querySelector("#zoom-title").append(book)
-                        document.querySelector("#zoom-title").append(document.createElement('br'))
+                        document.querySelector(".zoom-title").append(book)
+                        document.querySelector(".zoom-title").append(document.createElement('br'))
                         }
                     }
                 }
@@ -72,7 +67,8 @@
                     document.querySelector("#abhi_book").innerHTML = ""
                     var book = document.createElement("div");
                     book.id="book-title" 
-                    book.innerHTML = "Title: " + '<b>' + data.bookinfo['title'] +'</b>'
+                    // book.innerHTML = "Title: " + '<b>' + data.bookinfo['title'] +'</b>'
+                    book.innerHTML = data.bookinfo['title']
                     document.querySelector("#abhi_book").append(book)
                     var book = document.createElement("div");
                     book.id="book-year"
@@ -114,7 +110,7 @@
                         const review = document.createElement("a");
                         review.innerHTML = data.total_review[key][0]
                         console.log(key)
-                        x.innerHTML += '<div class="review-box"><div class="review-user">'+key+'</div>' + '<div class="review-rating">'+data.total_review[key][1]+'</div>' + '<div class="review-review">' + data.total_review[key][0] + '</div></div>'
+                        x.innerHTML += '<div class="review-box"><div class="review-user">'+'&#9787;'+key+'</div>' + '<div class="review-rating">'+data.total_review[key][1]+'☆'+'</div>' + '<div class="review-review">' + data.total_review[key][0] + '</div></div>'
 
                     }
                     console.log("out=for", typeof(x))
@@ -151,17 +147,17 @@
                 console.log("submit checking")
                 console.log(data)
                 if (data.name[0] === true) {
-                    document.querySelector("#review-results").append("Your Review has been succesfully submitted")
+
                     var x = document.querySelector("#review-results")
-                    x.innerHTML += '<div class="review-box"><div class="review-user">'+data.name[1] +'</div>' + '<div class="review-rating">'+rating+'</div>' + '<div class="review-review">' + review + '</div></div>'
+                    x.innerHTML += '<div class="review-box"><div class="review-user">'+data.name[1] +'</div>' + '<div class="review-rating">'+rating+'☆'+'</div>' + '<div class="review-review">' + review + '</div></div>'
                     var x = document.getElementById("review-part")
                     x.style.display = "none"
-                    
+                    document.querySelector("#review-results").append("Your Review has been succesfully submitted")
                 } else {
                     console.log("in-else", rating)
                     var x = document.getElementById("review-part")
                     x.style.display = "none"
-                    
+                    document.querySelector("#review-results").append("You have already given a review")
                     
                 }
             }
@@ -171,10 +167,10 @@
         </script>
     </head>
 
-    <body class = "body_result">
-        <div id = "topBar" style="padding-bottom: 70px;">
-            <div id = "display_username"  style="float: left;padding-left: 15px;">welcome <span id = "userName">{{ name }}</span></div>
-            <div id = "logout" style="float: right;"><a href="{{ url_for('logout') }}">Logout</a></div>
+    <body class = "body_result" style= "background-color:";>
+        <div id = "topBar" style="padding-bottom: 30px; padding-top: 10px;">
+            <div id = "display_username"  style="padding-left: 15px; font-size: 30px; color: gold; text-align: center; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; font-weight: bold;">Welcome <span id = "userName">{{ name }}</span></div>
+            <div id = "logout" style="float: right;"><a style="color: goldenrod;" href="{{ url_for('logout') }}">Logout</a></div>
         </div>
         <div class="container" >
             <div class = "searchBar_result">
@@ -188,8 +184,8 @@
                     <button id = "search-button">search</button>
                 </form>
                 <p id="no-results"></p>
-                <div id="zoom-title">
-
+                <!-- <div class="zoom-title" style="border: 1px dotted orangered; height: 500px; overflow-y: scroll; overflow-x: scroll; -ms-overflow-style: none; -webkit-scrollbar-:display= none;"> -->
+                <div class="zoom-title">
                 </div>
                 
             </div>
@@ -200,13 +196,26 @@
                     </div>
                 </div>
                 
-                <div id="review-part" style="display:block";>
-                    <div id="rate">
+                <div id="review-part">
+                    <!-- <div id="rate">
                         <input name = "rating" value = "1" id = "1"  type="radio" />1  
                         <input name = "rating" value = "2" id = "2"  type="radio" />2 
                         <input name = "rating" value = "3" id = "3"  type="radio" />3 
                         <input name = "rating" value = "4" id = "4"  type="radio" />4 
                         <input name = "rating" value = "5" id = "5"  type="radio" />5
+                    </div> -->
+                    <div class="rate">
+                        <input id="star5" name="rating" type="radio" value="5" class="radio-btn hide" />
+                        <label for="star5" style="color: black;">☆</label>
+                        <input id="star4" name="rating" type="radio" value="4" class="radio-btn hide" />
+                        <label for="star4" style="color: black;">☆</label>
+                        <input id="star3" name="rating" type="radio" value="3" class="radio-btn hide" />
+                        <label for="star3" style="color: black;">☆</label>
+                        <input id="star2" name="rating" type="radio" value="2" class="radio-btn hide" />
+                        <label for="star2" style="color: black;">☆</label>
+                        <input id="star1" name="rating" type="radio" value="1" class="radio-btn hide" />
+                        <label for="star1" style="color: black;">☆</label>
+                        <div class="clear"></div> 
                     </div>
                     <input type="search" id = "submit-review" class = "Review" name="Submit Review" placeholder="Submit Review" value="{{ inpt }}" required>
                     
