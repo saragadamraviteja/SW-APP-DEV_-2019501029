@@ -80,7 +80,7 @@ def auth():
             return render_template("register.html",message="User not yet registered, Please sign up first")
         elif check==0 :
             session['username'] = request.form.get("name")
-            return render_template("login.html",name=name)
+            return render_template("test.html",name=name)
 
         else:
             return render_template("register.html",message="Invalid Credentials, please enter correct username and password")
