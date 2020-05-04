@@ -12,7 +12,6 @@ from bookpage import getbook
 
 from datetime import datetime
 import csv
-from datetime import datetime
 
 app = Flask(__name__)
 # Configure session to use filesystem
@@ -87,53 +86,94 @@ def auth():
             return render_template("register.html",message="Invalid Credentials, please enter correct username and password")
     return render_template("register.html",message="Invalid Credentials")
 
-# @app.route('/search', methods = ['GET', 'POST'])
-# def search():
-#     if request.method == 'POST':
-#         search_type = request.form.get('book_tags').lower()
-#         # print(search_type)
-#         book_info = request.form.get('search_value').lower()
-#         # print(book_info)
-#         book_info = f'%{book_info.lower()}%'
+@app.route('/search', methods = ['GET', 'POST'])
+def search():
+    if request.method == 'POST':
+        search_type = request.form.get('book_tags').lower()
+        print(search_type)
+        book_info = request.form.get('search_value').lower()
+        print(book_info)
+        book_info = f'%{book_info.lower()}%'
 
-#         books_result = getbooks(search_type,book_info)
+        books_result = getbooks(search_type,book_info)
 
-#         # books_result = Book.query.order_by(Book.title.asc()).filter(getattr(Book, search_type).ilike(book_info)).all()
-#         # print(len(books_result))
-#         books_found = len(books_result)
-#         print(books_found)
-#         if not books_result:
-#             return render_template('login.html', message="No books found.", name = session['username'])
-#         return render_template('login.html', books_result=books_result, name = session['username'], message = "Total "+str(books_found)+" results found.")
-#     return render_template('login.html', name = session['username'])
+        # books_result = Book.query.order_by(Book.title.asc()).filter(getattr(Book, search_type).ilike(book_info)).all()
+        # print(len(books_result))
+        books_found = len(books_result)
+        print(books_found)
+        if not books_result:
+            return render_template('login.html', message="No books found.", name = session['username'])
+        return render_template('login.html', books_result=books_result, name = session['username'], message = "Total "+str(books_found)+" results found.")
+    return render_template('login.html', name = session['username'])
 
 @app.route("/test")
 def test():
-    return render_template("test.html",name = "abhi")
+    name = session['username']
+    return render_template("test.html",name = name)
+
+@app.route("/api/search",methods = ["POST"])
+def apisearch():
+    searchType = request.form.get("type").lower()
+    print(searchType)
+    userinput = request.form.get("query").lower()
+    print(userinput)
+    userinput = f'%{userinput.lower()}%'
+    allBooks = getbooks(searchType, userinput)
+    # print(allBooks)
+    # allBooks_json = [{"isbn":'0380795272',"title":'Krondor: The Betrayal',"author":'Raymond E. Feist'}]
+    allBooks_json = [] 
+
+    for book in allBooks:
+        eachBook = {}
+        eachBook["isbn"] = book.isbn
+        eachBook["title"] = book.title
+        eachBook["author"] = book.author
+        allBooks_json.append(eachBook)
+    return jsonify({"allBooks":allBooks_json})
 
 
 @app.route("/api/bookpage",methods = ["POST"])
 def apibookpage():
     isbn = request.form.get("isbn")
     bookreturned = getbook(isbn) 
-    print(bookreturned)
+    # print(bookreturned[0],"tets")
     Bookdetails = {}
-    Bookdetails["isbn"] = bookreturned.isbn
-    Bookdetails["title"] = bookreturned.title
-    Bookdetails["author"] = bookreturned.author
+    Bookdetails["isbn"] = bookreturned[0].isbn
+    Bookdetails["title"] = bookreturned[0].title
+    Bookdetails["author"] = bookreturned[0].author
+    Bookdetails["year"] = bookreturned[0].year
     return jsonify({"bookinfo":Bookdetails})
 
-@app.route("/api/bookpagereview",methods = ["POST"])
+@app.route("/api/review",methods = ["POST"])
 def apibookpagereview():
-    isbn = request.form.get("isbn")
-    name = request.form.get("username")
-    bookreturned = getbook(isbn) 
-    Bookdetails = {}
-    Bookdetails["isbn"] = bookreturned.isbn
-    Bookdetails["title"] = bookreturned.title
-    Bookdetails["author"] = bookreturned.author
-    return jsonify({"bookinfo":Bookdetails})
+   isbn = request.form.get("isbn")
+   total_reviews = db.session.query(Review).filter(Review.isbn == isbn)
+   print('ravi')
+   print(total_reviews)
+   print(len(list(total_reviews)))
+   tot_reviews = {}
+   for i in total_reviews:
+       tot_reviews[i.username] = [i.review,i.rating] 
+   print(tot_reviews)
+   return jsonify({'total_review': tot_reviews})
 
+@app.route("/api/submit-review", methods = ["POST"])
+def submitReview():
+    rating = request.form.get('rating')
+    review = request.form.get('review')
+    isbn = request.form.get('isbn')
+    name = session['username']
+    print(name)
+    r = Review.query.filter_by(username = name, isbn = isbn).first()
+    # flag = review_present(name,isbn)
+    print(r)
+    if r is None:
+        data = Review(username = name, isbn = isbn, rating = rating, review = review)
+        db.session.add(data)
+        db.session.commit()
+        # return jsonify({'flag1': 'true'})
+        return jsonify({"name" : [True,name]})
+    return jsonify({'name': [False,name]})
 
 
 
