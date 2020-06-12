@@ -107,6 +107,7 @@
       <button type="submit" onclick = "return funcValidate()" class="btn btn-danger" formaction = "{{ url_for('register') }}" id = "submit" style="background-color: blue; border-color: blue;">Sign Up</button>
       <button type="submit" formaction="{{ url_for('auth') }}" class= "btn btn-danger" value="Login">Login</button>
       </form>
+
     </div>
       {% if name %}
       <h5 style="color:white;padding-left:230px">Congratulations {{name}}, 
@@ -127,6 +128,16 @@
       <p>
         <h4 id = "error" style = "text-align:left;padding-left:230px;color:orange;"></h4>
       </p>
+      <br>
+      <br>
+      <br>
+      <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+<df-messenger
+  intent="WELCOME"
+  chat-title="test"
+  agent-id="5a9b0eab-7fd9-4475-af27-524ff048f100"
+  language-code="en"
+></df-messenger>
   </body>
 </html>
 
